@@ -1,8 +1,9 @@
+from io import BytesIO, StringIO
 import cv2
 from anime_face_detector import create_detector
 from PIL import Image, ImageDraw, ImageFont
 import matplotlib.pyplot as plt
-import numpy as np
+from flask import Flask, request, send_file
 import math
 
 def get_deg(arr):
@@ -13,8 +14,8 @@ def get_deg(arr):
 
 detector = create_detector('yolov3', device='cpu')
 
-def generate(image_name: str):
-    img = cv2.imread(image_name)
+def generate(image_file, result):
+    img = cv2.imread(image_file)
     preds = detector(img)
 
     gg = Image.open('gg.png')
@@ -53,4 +54,23 @@ def generate(image_name: str):
         rotated = rotated.resize((int(resize), int(resize*1.12)))
         image.paste(rotated, (int(points[5][0]), int(points[10][1])), rotated)
     
+    image.save(result, 'PNG')
     
+
+app = Flask(__name__)
+
+@app.post('/generate')
+def index():
+    if request.files['file'] is None:
+        return "no file."
+    file = request.files['file']
+    if not "image" in file.content_type:
+        return "not image."
+    dst = StringIO()
+    file.save(dst)
+    result = BytesIO()
+    generate(dst, result)
+    return send_file(result)
+    
+
+app.run("0.0.0.0", 8080)
