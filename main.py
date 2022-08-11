@@ -2,8 +2,8 @@ from io import BytesIO, StringIO
 import cv2
 from anime_face_detector import create_detector
 from PIL import Image, ImageDraw, ImageFont
-import matplotlib.pyplot as plt
-from flask import Flask, request, send_file, abort
+from werkzeug.wsgi import FileWrapper
+from flask import Flask, request, Response
 import math
 import numpy as np
 
@@ -65,16 +65,16 @@ app = Flask(__name__)
 
 @app.post('/generate')
 def index():
-    if request.files['file'] is None:
-        return abort(400)
+    if request.files.get('file') is None:
+        return "no file", 400
     file = request.files.get('file')
-    print(file.mimetype)
     dst = BytesIO()
     file.save(dst)
     dst.seek(0)
     result = generate(dst)
-    print(result.getbuffer().nbytes)
-    return send_file(result, mimetype='image/png')
+    result.seek(0)
+    result = FileWrapper(result)
+    return Response(result, mimetype='image/png', direct_passthrough=True)
     
 
 app.run("0.0.0.0", 8080, debug=False)
