@@ -15,12 +15,12 @@ def get_deg(arr):
 
 detector = create_detector('yolov3', device='cpu')
 
+gg = Image.open('gg.png')
+
 def generate(image_file: BytesIO) -> BytesIO:
     encoded = np.asarray(bytearray(image_file.read()), dtype=np.uint8)
     img = cv2.imdecode(encoded, cv2.IMREAD_COLOR)
     preds = detector(img)
-
-    gg = Image.open('gg.png')
     
     image = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
     draw = ImageDraw.Draw(image)

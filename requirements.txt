@@ -1,0 +1,5 @@
+python-opencv
+anime-face-detector
+pillow
+flask
+numpy
