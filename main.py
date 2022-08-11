@@ -35,7 +35,7 @@ def generate(image_file: BytesIO) -> BytesIO:
 
     for face in preds:
         points = face['keypoints']
-        color = image.getpixel((points[27][0], points[27][1]+5))
+        color = image.getpixel((points[27][0], points[27][1]+20))
         draw.polygon((
             (points[0][0], points[0][1]),
             (points[1][0], points[1][1]),
@@ -51,7 +51,7 @@ def generate(image_file: BytesIO) -> BytesIO:
         ), fill=color)
 
         deg = get_deg([points[0][0], points[0][1], points[4][0], points[4][1]])
-        rotated = gg.rotate(-deg)
+        rotated = gg.rotate(-deg, expand=True, center=(0,0))
         resize = math.sqrt((points[10][0] - points[5][0])**2 + (points[10][1] - points[5][1])**2)
         rotated = rotated.resize((int(resize), int(resize*1.12)))
         image.paste(rotated, (int(points[5][0]-(rotated.size[0]*0.9-gg.size[0])), int(points[10][1]-(rotated.size[1]*0.9-gg.size[1]))), rotated)
