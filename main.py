@@ -52,9 +52,10 @@ def generate(image_file: BytesIO) -> BytesIO:
 
         deg = get_deg([points[0][0], points[0][1], points[4][0], points[4][1]])
         rotated = gg.rotate(-deg, expand=True, center=(0,0))
+        
         resize = math.sqrt((points[10][0] - points[5][0])**2 + (points[10][1] - points[5][1])**2)
         rotated = rotated.resize((int(resize), int(resize*1.12)))
-        image.paste(rotated, (int(points[5][0]-(rotated.size[0]*0.9-gg.size[0])), int(points[10][1]-(rotated.size[1]*0.9-gg.size[1]))), rotated)
+        image.paste(rotated, (int(points[5][0]), int(points[5][1])), rotated)
     
     result = BytesIO()
     image.save(result, 'PNG')
