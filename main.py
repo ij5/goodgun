@@ -3,8 +3,9 @@ import cv2
 from anime_face_detector import create_detector
 from PIL import Image, ImageDraw, ImageFont
 import matplotlib.pyplot as plt
-from flask import Flask, request, send_file
+from flask import Flask, request, send_file, abort
 import math
+import numpy as np
 
 def get_deg(arr):
     rad = math.atan2(arr[3]-arr[1],arr[2]-arr[0])
@@ -14,8 +15,9 @@ def get_deg(arr):
 
 detector = create_detector('yolov3', device='cpu')
 
-def generate(image_file, result):
-    img = cv2.imread(image_file)
+def generate(image_file: BytesIO) -> BytesIO:
+    encoded = np.asarray(bytearray(image_file.read()), dtype=np.uint8)
+    img = cv2.imdecode(encoded, cv2.IMREAD_COLOR)
     preds = detector(img)
 
     gg = Image.open('gg.png')
@@ -54,7 +56,9 @@ def generate(image_file, result):
         rotated = rotated.resize((int(resize), int(resize*1.12)))
         image.paste(rotated, (int(points[5][0]), int(points[10][1])), rotated)
     
+    result = BytesIO()
     image.save(result, 'PNG')
+    return result
     
 
 app = Flask(__name__)
@@ -62,15 +66,15 @@ app = Flask(__name__)
 @app.post('/generate')
 def index():
     if request.files['file'] is None:
-        return "no file."
-    file = request.files['file']
-    if not "image" in file.content_type:
-        return "not image."
-    dst = StringIO()
+        return abort(400)
+    file = request.files.get('file')
+    print(file.mimetype)
+    dst = BytesIO()
     file.save(dst)
-    result = BytesIO()
-    generate(dst, result)
-    return send_file(result)
+    dst.seek(0)
+    result = generate(dst)
+    print(result.getbuffer().nbytes)
+    return send_file(result, mimetype='image/png')
     
 
-app.run("0.0.0.0", 8080)
+app.run("0.0.0.0", 8080, debug=False)
