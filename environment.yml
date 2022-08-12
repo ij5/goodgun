@@ -1,0 +1,13 @@
+name: goodgun
+dependencies:
+  - python=3.10
+  - opencv-python-headless
+  - pillow
+  - flask
+  - numpy
+  - mmdet
+  - mmpose
+  - mmcv-full
+    - -f https://download.openmmlab.com/mmcv/dist/cu102/torch1.8.0/index.html
+  - torch=1.8.0
+  - torchvision=0.9.0
