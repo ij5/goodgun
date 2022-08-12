@@ -5,7 +5,7 @@ numpy
 mmdet
 mmpose
 mmcv-full -f https://download.openmmlab.com/mmcv/dist/cpu/torch1.12.0/index.html
--i https://download.pytorch.org/whl/cpu
+--extra-index-url https://download.pytorch.org/whl/cpu
 torch
--i https://download.pytorch.org/whl/cpu
+--extra-index-url https://download.pytorch.org/whl/cpu
 torchvision
