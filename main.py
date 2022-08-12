@@ -88,5 +88,5 @@ def index():
         return {"status": 400}, 400
     return Response(result, mimetype='image/png', direct_passthrough=True)
     
-
-app.run("0.0.0.0", 8080, debug=False)
+if __name__ == "__main__":
+    app.run("0.0.0.0", 8080, debug=False)
