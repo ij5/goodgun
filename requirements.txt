@@ -1,5 +1,7 @@
 opencv-python-headless
-anime-face-detector
 pillow
 flask
 numpy
+mmdet
+mmpose
+mmcv-full

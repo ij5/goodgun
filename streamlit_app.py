@@ -11,3 +11,5 @@ if f is not None:
     result = BytesIO(resultbytes)
     result.seek(0)
     st.image(result, caption="Generated Image")
+
+st.markdown("by [이재희](https://github.com/ij5)")
