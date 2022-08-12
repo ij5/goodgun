@@ -4,6 +4,6 @@ flask
 numpy
 mmdet
 mmpose
-mmcv-full
+mmcv
 torch
 torchvision
