@@ -1,4 +1,4 @@
-python-opencv
+opencv-python
 anime-face-detector
 pillow
 flask
