@@ -19,9 +19,9 @@ gg = cv2.cvtColor(gg, cv2.COLOR_BGRA2RGBA)
 
 def generate(image_file: BytesIO) -> bytes:
     encoded = np.asarray(bytearray(image_file.read()), dtype=np.uint8)
-    img = cv2.imdecode(encoded, cv2.IMREAD_UNCHANGED)
+    img = cv2.imdecode(encoded, cv2.IMREAD_COLOR)
     preds = detector(img)
-    img = cv2.cvtColor(img, cv2.COLOR_BGRA2RGBA)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGBA)
 
     # for face in preds:
     #     draw.rectangle((face['bbox'][0], face['bbox'][1], face['bbox'][2], face['bbox'][3]), outline=(255, 0, 0), width=5)
@@ -30,6 +30,9 @@ def generate(image_file: BytesIO) -> bytes:
     #     for i, point in enumerate(face['keypoints']):
     #         # draw.ellipse((point[0]-2, point[1]-2, point[0]+2, point[1]+2), fill=(255, 0, 0))
     #         draw.text((point[0], point[1]), str(i), font=ImageFont.truetype('arial.ttf', 10), fill=(255, 0, 0))
+
+    if len(preds) == 0:
+        return False
 
     for face in preds:
         points = face['keypoints']
@@ -81,6 +84,8 @@ def index():
     file.save(dst)
     dst.seek(0)
     result = generate(dst)
+    if not result:
+        return {""}, 400
     return Response(result, mimetype='image/png', direct_passthrough=True)
     
 
