@@ -5,3 +5,5 @@ numpy
 mmdet
 mmpose
 mmcv-full
+torch
+torchvision
