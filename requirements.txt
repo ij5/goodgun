@@ -1,0 +1,9 @@
+opencv-python-headless
+pillow
+flask
+numpy
+mmdet
+mmpose
+mmcv-full
+torch
+torchvision
