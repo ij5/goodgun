@@ -4,6 +4,6 @@ flask
 numpy
 mmdet
 mmpose
-git+https://github.com/open-mmlab/mmcv
-torch
-torchvision
+mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu111/torch1.8.0/index.html
+torch==1.8.2 --extra-index-url https://download.pytorch.org/whl/lts/1.8/cu111
+torchvision==0.9.2 --extra-index-url https://download.pytorch.org/whl/lts/1.8/cu111
