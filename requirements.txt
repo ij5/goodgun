@@ -4,6 +4,6 @@ flask
 numpy
 mmdet
 mmpose
-mmcv
+git+https://github.com/open-mmlab/mmcv
 torch
 torchvision
