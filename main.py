@@ -85,7 +85,7 @@ def index():
     dst.seek(0)
     result = generate(dst)
     if not result:
-        return {""}, 400
+        return {"status": 400}, 400
     return Response(result, mimetype='image/png', direct_passthrough=True)
     
 
